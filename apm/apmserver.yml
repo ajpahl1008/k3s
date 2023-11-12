@@ -1,0 +1,30 @@
+apiVersion: apm.k8s.elastic.co/v1
+kind: ApmServer
+metadata:
+  name: apm-lab
+spec:
+  version: 8.9.0
+  count: 3
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+          #tls:
+          #selfSignedCertificate:
+          #disabled: true
+  elasticsearchRef:
+    name: "elasticsearch-lab"
+    namespace: elastic-system
+  podTemplate:
+    spec:
+      containers:
+      - name: apm-server
+        resources:
+          requests:
+            memory: 4Gi
+            cpu: 0.5
+          limits:
+            memory: 4Gi
+            cpu: 2
+
+

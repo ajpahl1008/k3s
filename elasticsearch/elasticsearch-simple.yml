@@ -1,0 +1,37 @@
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch-lab
+spec:
+  version: 8.10.2
+  http:
+    service:
+      spec:
+        type: LoadBalancer
+  nodeSets:
+  - name: simple-nodes
+    count: 3
+    config:
+      node.store.allow_mmap: false
+      node.roles: [ 'master', 'ingest', 'data' ]
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-storage
+        resources:
+          requests:
+            storage: 100Gi
+    podTemplate:
+      spec:
+        containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              memory: 16Gi
+            limits:
+              memory: 16Gi
+

@@ -1,0 +1,31 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-lab
+spec:
+  version: 8.10.2
+  count: 3
+  elasticsearchRef:
+    name: "elasticsearch-lab"
+    namespace: elastic-system
+  http:
+    service:
+      spec:
+        type: LoadBalancer # default is ClusterIP
+  podTemplate:
+    spec:
+      containers:
+      - name: kibana
+        env:
+          - name: NODE_OPTIONS
+            value: "--max-old-space-size=2048"
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 0.5
+          limits:
+            memory: 8Gi
+            cpu: 2
+              #
+              # nodeSelector:
+              #type: frontend
