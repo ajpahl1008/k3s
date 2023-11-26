@@ -4,7 +4,7 @@ metadata:
   name: legollyweb
   namespace: legolly
 spec:
-  replicas: 2             
+  replicas: 3             
   selector:
     matchLabels:
       app: legollyweb
@@ -14,8 +14,11 @@ spec:
         app: legollyweb
     spec:
       containers:
-      - image: ajpahl1008/legollyweb-x86
-        name: legollyweb-x86
+      - image: ajpahl1008/legollyweb:1.0
+        name: legollyweb
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
-          name: legollyweb-x86
+          name: legollyweb
+      imagePullSecrets:
+      - name: regcred
