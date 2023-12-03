@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legollyweb
+  namespace: legolly
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: legollyweb
+  template:
+    metadata:
+      labels:
+        app: legollyweb
+    spec:
+      containers:
+      - image: ajpahl1008/legollyweb:1.0
+        name: legollyweb
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: legollyweb
+      imagePullSecrets:
+      - name: regcred
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - kube2
+                - kube3
+                - kube4
