@@ -4,7 +4,7 @@ metadata:
   name: legollyweb
   namespace: legolly
 spec:
-  replicas: 3             
+  replicas: 3
   selector:
     matchLabels:
       app: legollyweb
@@ -22,3 +22,12 @@ spec:
           name: legollyweb
       imagePullSecrets:
       - name: regcred
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/worker
+                operator: In
+                values:
+                - worker
